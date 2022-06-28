@@ -18,16 +18,10 @@ local, and you've found our code helpful, please buy us a round!
 
 Distributed as-is; no warranty is given.
 ******************************************************************************/
+#ifndef _SPARKFUN_DRV2605L_H_
+#define _SPARKFUN_DRV2605L_H_
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include "Arduino.h"
-#else
-	#include "WProgram.h"
-	#include "pins_arduino.h"
-#endif
-
-#include <Wire.h>
-
+#include <stdint.h>
 
 //I2C address
 #define I2C_ADDR 0x5A
@@ -156,15 +150,20 @@ Distributed as-is; no warranty is given.
 //This bit reports the measurement of the LRA resonance period
 #define LRARESPERIOD_REG 0x22
 
+/* External function abstract definitions */
+/*! \cond */
+/* External function to be define in abstraction layer to access peripherals */
+bool DRV2605L_i2c_begin(void);
+void writeDRV2605L(char reg, char val);
+char readDRV2605L(char reg);
+/*! \endcond */
 
+/* Driver class and config functions */
 class SFE_HMD_DRV2605L 
 {
  public:
 
   SFE_HMD_DRV2605L(void);
-  bool begin(void);
-  void writeDRV2605L(uint8_t reg, uint8_t val);
-  uint8_t readDRV2605L(uint8_t reg);
   void Mode(uint8_t mode);
   void MotorSelect(uint8_t val);
   void RTP(uint8_t val);
@@ -191,8 +190,12 @@ class SFE_HMD_DRV2605L
   void OLP(uint8_t olp);
   void Vbatt(void);
   void LRAPER(void);
+
+
   
  private:
 
 };
 
+
+#endif /* _SPARKFUN_DRV2605L_H_ */

@@ -20,32 +20,20 @@ Distributed as-is; no warranty is given.
 ******************************************************************************/
 
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
+// #if defined(ARDUINO) && ARDUINO >= 100
+// #include "Arduino.h"
+// #else
+// #include "WProgram.h"
+// #endif
 
-#include <Wire.h>
+// #include <Wire.h>
 #include <Sparkfun_DRV2605L.h>
+#include <stdint.h>
+#include <stdio.h>
 
 SFE_HMD_DRV2605L::SFE_HMD_DRV2605L() 
 {
 
-}
-
-
-bool SFE_HMD_DRV2605L::begin() 
-{
-  Wire.begin();
-  //Get a read from the status register
-  //Want this to Read 0xE0, any other value than 0 and you have tripped the over-current protection=wrong motor
-  uint8_t status = readDRV2605L(STATUS_REG);
-  Serial.print("Status Register 0x"); 
-  Serial.println(status, HEX);
- 
- 
-  return true;
 }
 
 //Select Mode
@@ -232,33 +220,4 @@ void SFE_HMD_DRV2605L::RTP(uint8_t val)
 	// Serial.print("LRA resonance period 0x");
 	 //Serial.println(PER, HEX);
  }
- 
- 
-//Read function
-uint8_t SFE_HMD_DRV2605L::readDRV2605L(uint8_t reg) 
-{
-  uint8_t var ;
-   // Enable I2C Read
-    Wire.beginTransmission(I2C_ADDR);
-    Wire.write((byte)reg);
-    Wire.endTransmission();
-    Wire.requestFrom((byte)I2C_ADDR, (byte)1);
-    var = Wire.read();
-
- 
-  return var;
-}
-
-//Write Function 
-void SFE_HMD_DRV2605L::writeDRV2605L(uint8_t where, uint8_t what)
-{
-   // Enable I2C write
-    Wire.beginTransmission(I2C_ADDR);
-    Wire.write((byte)where);
-    Wire.write((byte)what);
-    Wire.endTransmission();
-}
-
-
-
 
